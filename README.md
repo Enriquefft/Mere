@@ -4,6 +4,10 @@
 
 > Just structure. AI does the rest.
 
+[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8E?style=for-the-badge&logo=go)](https://go.dev/)
+[![GitHub Stars](https://img.shields.io/github/stars/hybridz/mere?style=for-the-badge)](https://github.com/hybridz/mere/stargazers)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
 ---
 
 ## Quick Start
@@ -135,11 +139,3 @@ MIT - see [LICENSE](LICENSE) for details.
 ## Contributing
 
 Contributions welcome! Please review [contributing guidelines](CONTRIBUTING.md) before submitting PRs.
-
----
-
-## Links
-
-- [GitHub](https://github.com/hybridz/mere)
-- [Issues](https://github.com/hybridz/mere/issues)
-- [Documentation](https://github.com/hybridz/mere/wiki)
