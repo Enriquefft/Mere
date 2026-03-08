@@ -40,6 +40,17 @@ Traditional AI-assisted development problems:
 
 Mere replaces bloated meta-prompting frameworks with a single Go binary that enforces John Ousterhout's "Deep Modules" pattern.
 
+### Architecture Principles
+
+**Structure Over Prompts**
+Your codebase, not prompts or agent configs, is the biggest influence on AI output. Mere enforces deep modules: lots of implementation controlled by a simple interface.
+
+**Cache Advantage**
+Stay in a single session to exploit Claude Code's prefix caching. Cache reads cost 10% of normal tokens vs cold cache.
+
+**Taste at the Boundaries**
+Apply taste at module boundaries by writing `INTERFACE.md` contracts and boundary tests. Implementation inside modules is a "graybox" managed by AI.
+
 ---
 
 ## Installation
@@ -73,73 +84,18 @@ Download the latest binary from [releases](https://github.com/hybridz/mere/relea
 
 ## Usage
 
-### Initialize Project
-
-```bash
-mere init
-```
-
-Creates `.claude/` directory with project context and AI command templates.
-
-### Available Commands
-
 ```bash
 mere init        # Initialize .claude/ directory
 mere version     # Show version
 mere --help      # Show all commands
 ```
 
-### In Claude Code
+After `mere init`, use these AI commands in Claude Code:
 
-After `mere init`, use these AI commands:
-
-**`/module`** - Create or work on a deep module
-- **New module:** Define interface → get approval → scaffold structure
-- **Existing module:** Read interface → modify implementation → verify tests
-
-**`/status`** - Report project state
-- List all modules and their status
-- Summarize test coverage
-- Show active context
+- **`/module`** - Create or work on a deep module
+- **`/status`** - Report project state
 
 The AI automatically detects your project language (Go, Python, TypeScript, Java, Rust, etc.) and adapts file patterns accordingly.
-
----
-
-## Architecture
-
-### Philosophy
-
-**Structure Over Prompts**
-Your codebase, not prompts or agent configs, is the biggest influence on AI output. Mere enforces deep modules: lots of implementation controlled by a simple interface.
-
-**Cache Advantage**
-Stay in a single session to exploit Claude Code's prefix caching. Cache reads cost 10% of normal tokens vs cold cache.
-
-**Taste at the Boundaries**
-Apply taste at module boundaries by writing `INTERFACE.md` contracts and boundary tests. Implementation inside modules is a "graybox" managed by AI.
-
-### Project Structure
-
-```
-.claude/
-├── CLAUDE.md              # Project context + rules
-└── commands/
-    ├── module.md           # Create/work on modules
-    └── status.md          # Project state reporting
-
-services/
-└── [module-name]/
-    ├── [entry-point]       # Public exports
-    ├── INTERFACE.md        # Contract
-    └── src/              # Implementation (AI manages)
-
-tests/
-└── services/
-    └── [boundary-tests]   # Lock behavior
-```
-
-File extensions and conventions adapt to your project's detected language.
 
 ---
 
