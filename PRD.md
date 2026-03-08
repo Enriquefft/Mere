@@ -70,14 +70,16 @@ The `mere init` and `mere work` commands guide the AI to structure the user's co
 ```text
 services/
 ├── [module-name]/
-│   ├── index.ts           # INTERFACE: types + public exports [cite: 127]
-│   ├── INTERFACE.md       # AI-readable contract (Progressive Disclosure) [cite: 128]
-│   └── src/               # IMPLEMENTATION: AI manages [cite: 129]
+│   ├── [module entry point file]   # INTERFACE: types + public exports
+│   ├── INTERFACE.md                # AI-readable contract (Progressive Disclosure)
+│   └── src/                        # IMPLEMENTATION: AI manages
 tests/
-└── services/              # Boundary tests lock behavior [cite: 139]
-    ├── [module-name].test.ts [cite: 140]
+└── services/                        # Boundary tests lock behavior
+    └── [boundary test file]
 
 ```
+
+**Note:** File patterns are conceptual and adapt to any programming language. The AI detects the project's language and creates appropriate files (e.g., .go, .py, .ts, .java, .rs) following ecosystem conventions.
 
 ## 4. Technical Specifications
 

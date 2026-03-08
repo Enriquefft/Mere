@@ -26,6 +26,14 @@ go.work.sum
 
 # env file
 .env
+.envrc
+
+# Binary
+mere
+bin/
+
+# Generated .claude directories in user projects
+.claude/
 
 # Editor/IDE
 # .idea/

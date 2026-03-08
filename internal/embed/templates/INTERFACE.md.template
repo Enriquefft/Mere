@@ -1,0 +1,21 @@
+# Module: {MODULE_NAME}
+
+## Purpose
+{What this module does and what problem it solves}
+
+## Public Interface
+
+### Types
+{Define input/output types}
+
+### Functions
+{Function signatures with brief descriptions}
+
+### Usage Examples
+{Example code showing how to use this module}
+
+## Dependencies
+{Other modules or external dependencies}
+
+## Constraints & Invariants
+{What must always be true - business rules, guarantees}
