@@ -1,0 +1,31 @@
+---
+name: Question / Help
+about: Ask for help using Mere
+title: "[HELP] <brief question title>"
+labels: question
+assignees: ''
+
+body:
+  - type: markdown
+  attributes:
+    value: |
+      ## Question
+      Describe your question clearly and concisely.
+
+      ## What I've Tried
+      What have you already attempted? Include steps you've taken.
+
+      ## Environment
+      - Mere version: `mere version`
+      - Operating system:
+      - Claude Code version (if applicable):
+
+      ## Expected vs Actual Behavior
+      What did you expect to happen? What actually happened?
+
+      ## Error Messages
+      Include any error messages or stack traces.
+
+      ## Screenshots
+      If helpful, add screenshots to illustrate the issue.
+    render: markdown

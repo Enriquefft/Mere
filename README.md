@@ -7,6 +7,7 @@
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8E?style=for-the-badge&logo=go)](https://go.dev/)
 [![GitHub Stars](https://img.shields.io/github/stars/hybridz/mere?style=for-the-badge)](https://github.com/hybridz/mere/stargazers)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![CI](https://github.com/hybridz/mere/actions/workflows/test.yml/badge.svg)](https://github.com/hybridz/mere/actions/workflows/test.yml)
 
 ---
 

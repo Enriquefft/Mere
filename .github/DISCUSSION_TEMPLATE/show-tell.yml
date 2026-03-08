@@ -1,0 +1,33 @@
+---
+name: Show & Tell
+about: Share what you've built with Mere
+title: "[SHOW & TELL] <brief project name or description>"
+labels: showcase
+assignees: ''
+
+body:
+  - type: markdown
+  attributes:
+    value: |
+      ## Project Description
+      Tell us about your project built with Mere!
+
+      ## How Mere Helped
+      How did Mere improve your development workflow?
+      - Faster AI responses?
+      - Better code quality?
+      - More consistent output?
+      - Other benefits?
+
+      ## Project Details
+      - Project name:
+      - Repository link (if public):
+      - Live URL (if applicable):
+      - Tech stack:
+
+      ## Screenshots
+      Share screenshots of your project structure or AI interactions!
+
+      ## Tips for Others
+      Any tips or lessons learned from using Mere that others might find helpful?
+    render: markdown
