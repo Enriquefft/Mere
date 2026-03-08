@@ -2,161 +2,185 @@
 
 **The minimal, module-first architecture toolkit for Claude Code.**
 
-> Just the architecture. AI does the rest.
+> Just structure. AI does the rest.
 
-## Overview
+---
 
-Mere is a foundational developer tool designed to optimize codebases for autonomous AI agents (Claude Code). The core insight is revolutionary in its simplicity: **the codebase structure itself is the most critical factor in AI-assisted development**, far outweighing prompt engineering or agent orchestration systems.
+## Quick Start
 
-Mere replaces bloated, 15,000-line meta-prompting frameworks with a single, lightweight Go binary that scaffolds exactly what AI needs: deep modules, clean interfaces, and strict boundary tests.
+Get from zero to your first AI-powered module in 60 seconds:
 
-## Philosophy
+```bash
+# 1. Install (one line)
+curl -fsSL https://mere.run/install | bash
 
-### Structure Over Prompts
+# 2. Initialize your project
+mere init
 
-Your codebase, far more than your prompts or agent configurations, is the biggest influence on AI output. AI enters a codebase with no memory or context. Mere enforces John Ousterhout's "Deep Modules" pattern: lots of implementation controlled by a simple interface.
+# 3. Open Claude Code and create a module
+/module
+```
 
-### Cache Advantage
+**That's it.** Mere scaffolds the architecture, you describe the interface, and AI builds the implementation.
 
-Mere's workflow is explicitly designed to exploit Claude Code's prefix caching model:
+---
 
-- Cache matches by prefix from the start of context
-- Cache reads cost 10% of normal token cost
-- Spawning fresh sub-agents forces a cold cache, multiplying costs by 3-5x
-- **The Mere Way:** Stay in a single session, use `/compact` to compress state, maintain warm cache for 10-20% relative costs
+## Why Mere?
 
-### Taste at the Boundaries
+Traditional AI-assisted development problems:
 
-Stop writing implementation code. Apply taste at the boundaries by writing `INTERFACE.md` contracts and boundary tests. The implementation inside the module is treated as a "graybox" managed entirely by AI.
+| Problem | Traditional Approach | Mere Approach |
+|----------|-------------------|--------------|
+| Context loss | Fresh agents start cold = 3-5x token cost | Single session + cached prefix = 10-20% cost |
+| Inconsistent output | Prompts drift over time | Fixed interface contracts lock behavior |
+| No boundaries | AI modifies everything | Taste applied at module boundaries only |
+| Prompts over code | 15,000-line agent configs | 50-line `.claude/` directory |
+
+**The insight:** Your codebase structure is the most critical factor in AI-assisted development — far outweighing prompt engineering or agent orchestration.
+
+Mere replaces bloated meta-prompting frameworks with a single Go binary that enforces John Ousterhout's "Deep Modules" pattern.
+
+---
 
 ## Installation
 
-### Quick Install
+### Recommended (One-Command Install)
 
 ```bash
 curl -fsSL https://mere.run/install | bash
 ```
 
-### Manual Install
+This downloads the standalone binary and places it in `/usr/local/bin`.
 
-Download the latest release from [GitHub Releases](https://github.com/hybridz/mere/releases) and place the binary in your PATH.
+### Alternative Install Methods
 
-### From Source
+**From Go:**
+```bash
+go install github.com/hybridz/mere@latest
+```
 
+**From Source:**
 ```bash
 git clone https://github.com/hybridz/mere.git
 cd mere
-just build
-just install
+just build && just install
 ```
+
+**From GitHub Releases:**
+Download the latest binary from [releases](https://github.com/hybridz/mere/releases) and add to your PATH.
+
+---
 
 ## Usage
 
-### Initialize a Project
+### Initialize Project
 
 ```bash
 mere init
 ```
 
-This creates the `.claude/` directory with:
-- `CLAUDE.md` - Project context and boundary rules
-- `commands/` - AI command templates for module management
+Creates `.claude/` directory with project context and AI command templates.
 
 ### Available Commands
 
 ```bash
 mere init        # Initialize .claude/ directory
-mere version     # Display current version
+mere version     # Show version
 mere --help      # Show all commands
 ```
 
 ### In Claude Code
 
-After running `mere init`, you have access to AI commands:
+After `mere init`, use these AI commands:
 
 **`/module`** - Create or work on a deep module
-- If module doesn't exist: Create new module with interface approval
-- If module exists: Work on implementation without breaking contract
-
-The AI will automatically detect your project's language and create appropriate files (e.g., .go, .py, .ts, .java, .rs) following your ecosystem's conventions.
+- **New module:** Define interface → get approval → scaffold structure
+- **Existing module:** Read interface → modify implementation → verify tests
 
 **`/status`** - Report project state
-- Show all modules and their status
-- Summarize test status
-- Report active context
+- List all modules and their status
+- Summarize test coverage
+- Show active context
 
-## Project Structure
+The AI automatically detects your project language (Go, Python, TypeScript, Java, Rust, etc.) and adapts file patterns accordingly.
 
-Mere creates this structure in your project:
+---
+
+## Architecture
+
+### Philosophy
+
+**Structure Over Prompts**
+Your codebase, not prompts or agent configs, is the biggest influence on AI output. Mere enforces deep modules: lots of implementation controlled by a simple interface.
+
+**Cache Advantage**
+Stay in a single session to exploit Claude Code's prefix caching. Cache reads cost 10% of normal tokens vs cold cache.
+
+**Taste at the Boundaries**
+Apply taste at module boundaries by writing `INTERFACE.md` contracts and boundary tests. Implementation inside modules is a "graybox" managed by AI.
+
+### Project Structure
 
 ```
 .claude/
-├── CLAUDE.md              # Project context + boundary rules
+├── CLAUDE.md              # Project context + rules
 └── commands/
-    ├── module.md           # Create or work on modules
+    ├── module.md           # Create/work on modules
     └── status.md          # Project state reporting
 
 services/
-├── [module-name]/
-│   ├── [module entry point file]   # INTERFACE: types + public exports
-│   ├── INTERFACE.md                # AI-readable contract
-│   └── src/                        # IMPLEMENTATION: AI manages
+└── [module-name]/
+    ├── [entry-point]       # Public exports
+    ├── INTERFACE.md        # Contract
+    └── src/              # Implementation (AI manages)
 
 tests/
-└── services/                        # Boundary tests lock behavior
-    └── [boundary test file]
+└── services/
+    └── [boundary-tests]   # Lock behavior
 ```
 
-**Note:** File extensions and naming conventions are determined by your project's language. The AI will automatically detect and adapt to your ecosystem's conventions.
+File extensions and conventions adapt to your project's detected language.
+
+---
 
 ## Development
 
-### Build
+### Build & Test
 
 ```bash
-just build        # Build binary to ./bin/
-just build-local  # Build binary to current directory
+just build        # Build to ./bin/
+just test         # Run tests
+just dev          # Full workflow (clean + deps + build + test)
 ```
 
-### Test
+### Nix Development
+
+Uses flakes for reproducible environment:
 
 ```bash
-just test               # Run tests
-just test-coverage      # Run tests with coverage
-```
-
-### Install
-
-```bash
-just install       # Install to $GOPATH/bin
+direnv reload    # Load dev shell
 ```
 
 ### Other Commands
 
 ```bash
-just help          # Show all available commands
-just clean         # Clean build artifacts
-just deps          # Download and tidy dependencies
+just help          # Show all commands
 just fmt           # Format code
-just lint          # Run linter (requires golangci-lint)
-just dev           # Run full dev workflow (clean + deps + build + test)
+just lint          # Run linter
+just deps          # Tidy dependencies
 ```
 
-### Development with Nix
-
-This project uses Nix flakes for reproducible development:
-
-```bash
-direnv reload    # Load the development environment
-```
+---
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT - see [LICENSE](LICENSE) for details.
 
 ## Contributing
 
-Contributions are welcome! Please read the contributing guidelines before submitting PRs.
+Contributions welcome! Please review [contributing guidelines](CONTRIBUTING.md) before submitting PRs.
+
+---
 
 ## Links
 
