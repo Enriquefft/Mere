@@ -8,38 +8,55 @@ Unified command for module lifecycle:
 
 ## Process
 
-### Step 1: Detect Module State
+### Step 1: Read Context (Always First)
+
+Before anything else, read:
+1. `.claude/context/ARCHITECTURE.md` — understand constraints, decisions, conventions
+2. `.claude/context/MANIFEST.md` — understand what modules already exist and their dependencies
+
+**Do not proceed until both files are read.**
+
+> Note: Never modify `ARCHITECTURE.md`. If the work reveals a needed architectural
+> decision, suggest it to the human as a proposed addition — do not write it yourself.
+
+---
+
+### Step 2: Detect Module State
 
 Ask user for module name, then:
 1. Check if `services/[module-name]/` exists
-2. If NOT exists → Go to Step 2 (Create)
+2. If NOT exists → Go to Step 3 (Create)
 3. If exists → Go to Step 4 (Work)
 
-### Step 2: Create Module (New)
+---
 
-#### 2a. Module Definition
+### Step 3: Create Module (New)
+
+#### 3a. Module Definition
 
 Ask user for:
 - Module name (e.g., "auth", "database")
 - Brief purpose
 - Key responsibilities
 
-#### 2b. Interface Design
+Cross-check against ARCHITECTURE.md constraints and MANIFEST.md existing modules before proceeding.
 
-Generate `INTERFACE.md` template with:
+#### 3b. Interface Design
+
+Generate `INTERFACE.md` using `.claude/templates/INTERFACE.md` as the template:
 - Purpose
 - Public Interface (Types, Functions)
 - Constraints & Invariants
 
 **Get human approval before proceeding.**
 
-#### 2c. Scaffold Structure
+#### 3c. Scaffold Structure
 
 Create:
 ```
 services/[module-name]/
 ├── [module entry point]   # Public types + exports
-├── INTERFACE.md            # Approved interface
+├── INTERFACE.md           # Approved interface
 └── src/
     ├── core impl
     └── private helpers
@@ -48,19 +65,21 @@ tests/services/
 └── [boundary test file]
 ```
 
-#### 2d. Write Boundary Tests
+#### 3d. Write Boundary Tests
 
 - Test all public functions
 - Test edge cases
 - Lock in expected behavior
 
-#### 2e. Initial Implementation
+#### 3e. Initial Implementation
 
-Implement to satisfy both INTERFACE.md and boundary tests
+Implement to satisfy both INTERFACE.md and boundary tests.
 
-### Step 3: Work on Module (Existing)
+---
 
-#### 3a. Read Contract
+### Step 4: Work on Module (Existing)
+
+#### 4a. Read Contract
 
 Read and understand:
 - `services/[module-name]/INTERFACE.md`
@@ -69,7 +88,7 @@ Read and understand:
 
 **Do not modify INTERFACE.md unless evolving contract.**
 
-#### 3b: Identify Changes
+#### 4b. Identify Changes
 
 Ask user what needs changing:
 - Bug fixes
@@ -77,32 +96,51 @@ Ask user what needs changing:
 - Internal refactoring
 - Feature additions (within scope)
 
-#### 3c: Modify Implementation
+#### 4c. Modify Implementation
 
 Only modify files in `services/[module-name]/src/`
 
-#### 3d: Run Boundary Tests
+#### 4d. Run Boundary Tests
 
 Use appropriate test command for detected language.
 
-#### 3e: Verify
+#### 4e. Verify
 
 - Boundary tests pass
 - Interface contract maintained
 - No breaking changes
 
+---
+
+### Step 5: Update MANIFEST.md (Always Last)
+
+After all work is complete and tests pass, update `.claude/context/MANIFEST.md`:
+- Add new module to inventory (if created)
+- Update status, dependencies, or purpose (if changed)
+- Append a row to Recent Changes with today's date and what was done
+
+**This is the last step. Do not update MANIFEST.md before the work is verified.**
+
+---
+
 ## Success Criteria
 
 Create mode:
+- [ ] ARCHITECTURE.md and MANIFEST.md read at start
 - [ ] Interface approved
 - [ ] Structure created
 - [ ] Boundary tests written
 - [ ] Implementation passes tests
+- [ ] MANIFEST.md updated
 
 Work mode:
+- [ ] ARCHITECTURE.md and MANIFEST.md read at start
 - [ ] Boundary tests pass
 - [ ] Contract unchanged (or evolved with approval)
 - [ ] Implementation improved
+- [ ] MANIFEST.md updated
+
+---
 
 ## AI Inference Guidelines
 
