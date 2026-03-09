@@ -108,27 +108,29 @@ install_binary() {
     local source="$1"
     local target="${INSTALL_DIR}/mere"
 
-    # Check if install directory exists
+    # Check if install directory exists, create if needed
     if [ ! -d "$INSTALL_DIR" ]; then
         warn "Install directory ${INSTALL_DIR} does not exist. Creating it..."
-        sudo mkdir -p "$INSTALL_DIR"
+        if mkdir -p "$INSTALL_DIR" 2>/dev/null; then
+            :
+        else
+            sudo mkdir -p "$INSTALL_DIR"
+        fi
     fi
 
     # Check if we need sudo
     if [ -w "$INSTALL_DIR" ]; then
         info "Installing Mere to ${target}..."
         cp "$source" "$target"
+        chmod +x "$target"
     else
         info "Installing Mere to ${target} (requires sudo)..."
         sudo cp "$source" "$target"
+        sudo chmod +x "$target"
     fi
 
-    # Make sure it's executable
-    sudo chmod +x "$target"
-
-    # Clean up temp file
-    rm "$source"
-    rmdir "$(dirname "$source")"
+    # Clean up temp directory
+    rm -rf "$(dirname "$source")"
 }
 
 # Check PATH
