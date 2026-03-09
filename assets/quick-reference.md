@@ -13,7 +13,7 @@ This document describes the quick reference card design.
 ║  ╔═════════════════════════════════════════════════╗  ║
 ║  ║                                                  ║  ║
 ║  ║  INSTALLATION                                     ║  ║
-║  ║  $ curl -fsSL https://mere.run/install | bash      ║  ║
+║  ║  $ curl -fsSL https://mere.enriquefft.com/install | bash      ║  ║
 ║  ║                                                  ║  ║
 ║  ║──────────────────────────────────────────────────────────  ║  ║
 ║  ║                                                  ║  ║

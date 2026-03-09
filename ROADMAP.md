@@ -104,10 +104,10 @@ Want to influence what gets built next?
 
 ## Timeline Estimates
 
-- **v0.2:** Q1 2025 (Current)
-- **v0.3:** Q2 2025
-- **v0.4:** Q3 2025
-- **v0.5:** Q4 2025
-- **v1.0:** 2026
+- **v0.2:** March 2026 (Current)
+- **v0.3:** Mid 2026
+- **v0.4:** Late 2026
+- **v0.5:** Early 2027
+- **v1.0:** 2027
 
 *Note: Timeline may change based on community feedback and resource availability.*

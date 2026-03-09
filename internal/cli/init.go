@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hybridz/mere/internal/scaffold"
+	"github.com/Enriquefft/Mere/internal/scaffold"
 	cliv2 "github.com/urfave/cli/v2"
 )
 

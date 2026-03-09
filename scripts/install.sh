@@ -6,7 +6,7 @@ set -e
 
 VERSION="${VERSION:-latest}"
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
-REPO="hybridz/mere"
+REPO="Enriquefft/Mere"
 GITHUB_BASE="https://github.com/${REPO}/releases"
 
 # Colors for output
@@ -77,7 +77,7 @@ download_binary() {
     local version="$1"
     local os="$2"
     local arch="$3"
-    local filename="mere-${os}-${arch}"
+    local filename="mere-${os}-${arch}.tar.gz"
     local download_url="${GITHUB_BASE}/download/${version}/${filename}"
 
     info "Downloading Mere ${version} for ${os}/${arch}..."
@@ -85,13 +85,17 @@ download_binary() {
 
     # Create temp directory for download
     local tmp_dir=$(mktemp -d)
+    local tmp_archive="${tmp_dir}/${filename}"
     local tmp_file="${tmp_dir}/mere"
 
-    # Download binary
-    if ! curl -fsSL "$download_url" -o "$tmp_file"; then
+    # Download archive
+    if ! curl -fsSL "$download_url" -o "$tmp_archive"; then
         error "Failed to download Mere from ${download_url}"
         exit 1
     fi
+
+    # Extract binary from archive
+    tar -xzf "$tmp_archive" -C "$tmp_dir" mere
 
     # Make binary executable
     chmod +x "$tmp_file"

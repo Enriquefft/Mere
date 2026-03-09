@@ -1,4 +1,4 @@
-module github.com/hybridz/mere
+module github.com/Enriquefft/Mere
 
 go 1.25.7
 

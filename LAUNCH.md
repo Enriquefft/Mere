@@ -74,7 +74,7 @@ Post to these subreddits (10 min apart):
 ### 9:30 AM - Hacker News
 - [ ] Submit to https://news.ycombinator.com/submit
 - [ ] Title: "Show HN: Mere - 50-line config replaces 15,000-line AI prompting frameworks"
-- [ ] URL: https://github.com/hybridz/mere
+- [ ] URL: https://github.com/Enriquefft/Mere
 - [ ] Add first comment with quick summary
 
 **Tip:** HN peaks at 9 AM ET. Don't delay.
@@ -151,7 +151,7 @@ Post to these subreddits (10 min apart):
 - "Thanks for the upvote! 🙌 Let me know if you have any questions about Mere!"
 - "Great question! Yes, Mere supports [language]. It auto-detects your project's setup."
 - "The magic is in the .claude/ directory - it's just 50 lines of structure, not prompts!"
-- "Check out the comparison docs: github.com/hybridz/mere/blob/main/COMPARISON.md"
+- "Check out the comparison docs: github.com/Enriquefft/Mere/blob/main/COMPARISON.md"
 
 ### Reddit Responses
 - "Good catch! That's a great question. The key difference is..."
@@ -202,7 +202,7 @@ Track these metrics throughout launch:
 ## Emergency Contacts
 
 If anything breaks during launch:
-- **GitHub:** https://github.com/hybridz/mere/issues
+- **GitHub:** https://github.com/Enriquefft/Mere/issues
 - **Twitter:** @enriquefft (for communication)
 - **Email:** enrique@github.com
 

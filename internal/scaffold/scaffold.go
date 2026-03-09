@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/hybridz/mere/internal/embed"
+	"github.com/Enriquefft/Mere/internal/embed"
 )
 
 // InitProject initializes the .claude/ directory structure with embedded templates

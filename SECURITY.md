@@ -7,8 +7,6 @@ The following versions of Mere are currently supported with security updates:
 | Version | Support Status |
 |---------|---------------|
 | v0.2.x | ✅ Supported (Current) |
-| v0.1.x | ⚠️ Security fixes only |
-| v0.0.x | ❌ Unsupported |
 
 ## Reporting a Vulnerability
 
@@ -44,7 +42,7 @@ Please include:
 When using Mere, follow these security practices:
 
 ### Installation
-- Only install from official sources: GitHub releases or mere.run
+- Only install from official sources: GitHub releases or mere.enriquefft.com
 - Verify checksums if provided
 - Keep Mere updated to the latest version
 

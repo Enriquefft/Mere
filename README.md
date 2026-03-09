@@ -5,9 +5,9 @@
 > Just structure. AI does the rest.
 
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8E?style=for-the-badge&logo=go)](https://go.dev/)
-[![GitHub Stars](https://img.shields.io/github/stars/hybridz/mere?style=for-the-badge)](https://github.com/hybridz/mere/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/Enriquefft/Mere?style=for-the-badge)](https://github.com/Enriquefft/Mere/stargazers)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![CI](https://github.com/hybridz/mere/actions/workflows/test.yml/badge.svg)](https://github.com/hybridz/mere/actions/workflows/test.yml)
+[![CI](https://github.com/Enriquefft/Mere/workflows/Test/badge.svg)](https://github.com/Enriquefft/Mere/actions/workflows/test.yml)
 
 ---
 
@@ -17,7 +17,7 @@ Get from zero to your first AI-powered module in 60 seconds:
 
 ```bash
 # 1. Install (one line)
-curl -fsSL https://mere.run/install | bash
+curl -fsSL https://mere.enriquefft.com/install | bash
 
 # 2. Initialize your project
 mere init
@@ -63,7 +63,7 @@ Apply taste at module boundaries by writing `INTERFACE.md` contracts and boundar
 ### Recommended (One-Command Install)
 
 ```bash
-curl -fsSL https://mere.run/install | bash
+curl -fsSL https://mere.enriquefft.com/install | bash
 ```
 
 This downloads the standalone binary and places it in `/usr/local/bin`.
@@ -72,18 +72,18 @@ This downloads the standalone binary and places it in `/usr/local/bin`.
 
 **From Go:**
 ```bash
-go install github.com/hybridz/mere@latest
+go install github.com/Enriquefft/Mere@latest
 ```
 
 **From Source:**
 ```bash
-git clone https://github.com/hybridz/mere.git
+git clone https://github.com/Enriquefft/Mere.git
 cd mere
 just build && just install
 ```
 
 **From GitHub Releases:**
-Download the latest binary from [releases](https://github.com/hybridz/mere/releases) and add to your PATH.
+Download the latest binary from [releases](https://github.com/Enriquefft/Mere/releases) and add to your PATH.
 
 ---
 
