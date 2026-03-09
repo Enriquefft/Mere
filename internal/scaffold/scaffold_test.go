@@ -108,16 +108,25 @@ func TestInitProject_New(t *testing.T) {
 		t.Fatalf("CLAUDE.md not created at project root: %v", err)
 	}
 
-	// Verify commands directory was created
-	commandsDir := filepath.Join(claudeDir, "commands")
-	if _, err := os.Stat(commandsDir); err != nil {
-		t.Fatalf("commands directory not created: %v", err)
+	// Verify subdirectories were created
+	for _, dir := range []string{"commands", "templates", "context"} {
+		path := filepath.Join(claudeDir, dir)
+		if _, err := os.Stat(path); err != nil {
+			t.Fatalf("%s directory not created: %v", path, err)
+		}
 	}
 
-	// Verify command templates were created
+	commandsDir := filepath.Join(claudeDir, "commands")
+	templatesDir := filepath.Join(claudeDir, "templates")
+	contextDir := filepath.Join(claudeDir, "context")
+
+	// Verify all expected files were created
 	expectedFiles := []string{
 		filepath.Join(commandsDir, "module.md"),
 		filepath.Join(commandsDir, "status.md"),
+		filepath.Join(templatesDir, "INTERFACE.md"),
+		filepath.Join(contextDir, "MANIFEST.md"),
+		filepath.Join(contextDir, "ARCHITECTURE.md"),
 	}
 
 	for _, file := range expectedFiles {
@@ -202,7 +211,7 @@ func TestInitProject_ExistingWithForce(t *testing.T) {
 	}
 
 	// Verify content is from template (not the custom content)
-	expectedContent := "## What This Is"
+	expectedContent := "@.claude/context/ARCHITECTURE.md"
 	if !containsString(string(content), expectedContent) {
 		t.Errorf("CLAUDE.md does not contain expected template content: %s", expectedContent)
 	}

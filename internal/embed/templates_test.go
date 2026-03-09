@@ -16,15 +16,48 @@ func TestGetClaudeMD(t *testing.T) {
 		t.Error("GetClaudeMD() returned empty content")
 	}
 
-	// Verify it contains expected content
-	expected := "# {PROJECT_NAME}"
+	// CLAUDE.md is an entry point that imports ARCHITECTURE.md
+	expected := "@.claude/context/ARCHITECTURE.md"
 	if !strings.Contains(content, expected) {
-		t.Errorf("GetClaudeMD() does not contain expected content: %s", expected)
+		t.Errorf("GetClaudeMD() does not contain expected import: %s", expected)
+	}
+}
+
+func TestGetArchitectureMD(t *testing.T) {
+	content, err := GetArchitectureMD()
+	if err != nil {
+		t.Fatalf("GetArchitectureMD() error = %v", err)
 	}
 
-	// Check that it has tech stack section
+	if len(content) == 0 {
+		t.Error("GetArchitectureMD() returned empty content")
+	}
+
+	if !strings.Contains(content, "# Architecture:") {
+		t.Errorf("GetArchitectureMD() should contain '# Architecture:' header")
+	}
+
 	if !strings.Contains(content, "Tech Stack") {
-		t.Errorf("GetClaudeMD() should contain 'Tech Stack' section")
+		t.Errorf("GetArchitectureMD() should contain 'Tech Stack' section")
+	}
+}
+
+func TestGetManifestMD(t *testing.T) {
+	content, err := GetManifestMD()
+	if err != nil {
+		t.Fatalf("GetManifestMD() error = %v", err)
+	}
+
+	if len(content) == 0 {
+		t.Error("GetManifestMD() returned empty content")
+	}
+
+	if !strings.Contains(content, "Project Manifest") {
+		t.Errorf("GetManifestMD() should contain 'Project Manifest' header")
+	}
+
+	if !strings.Contains(content, "Module Inventory") {
+		t.Errorf("GetManifestMD() should contain 'Module Inventory' section")
 	}
 }
 
@@ -86,12 +119,13 @@ func TestListTemplates(t *testing.T) {
 		t.Error("ListTemplates() returned no files")
 	}
 
-	// Check for expected files
 	expectedFiles := map[string]bool{
-		"templates/claude/CLAUDE.md":      false,
-		"templates/commands/module.md":      false,
-		"templates/commands/status.md":      false,
-		"templates/INTERFACE.md.template": false,
+		"templates/claude/CLAUDE.md":       false,
+		"templates/claude/ARCHITECTURE.md": false,
+		"templates/claude/MANIFEST.md":     false,
+		"templates/commands/module.md":     false,
+		"templates/commands/status.md":     false,
+		"templates/INTERFACE.md.template":  false,
 	}
 
 	for _, file := range files {
@@ -123,13 +157,17 @@ func TestGetTemplatesFS(t *testing.T) {
 func TestAllTemplatesEmbedded(t *testing.T) {
 	// Verify that all template functions return valid content
 	tests := []struct {
-		name    string
-		getFunc func() (string, error)
+		name         string
+		getFunc      func() (string, error)
+		checkHeaders bool
 	}{
-		{"CLAUDE.md", GetClaudeMD},
-		{"module.md", GetModuleMD},
-		{"status.md", GetStatusMD},
-		{"INTERFACE.md.template", GetInterfaceMD},
+		// CLAUDE.md is an import-only file, no markdown headers
+		{"CLAUDE.md", GetClaudeMD, false},
+		{"ARCHITECTURE.md", GetArchitectureMD, true},
+		{"MANIFEST.md", GetManifestMD, true},
+		{"module.md", GetModuleMD, true},
+		{"status.md", GetStatusMD, true},
+		{"INTERFACE.md.template", GetInterfaceMD, true},
 	}
 
 	for _, tt := range tests {
@@ -144,8 +182,7 @@ func TestAllTemplatesEmbedded(t *testing.T) {
 				t.Errorf("%s: returned empty content", tt.name)
 			}
 
-			// Verify it's valid markdown (has at least one # header)
-			if !strings.Contains(content, "#") {
+			if tt.checkHeaders && !strings.Contains(content, "#") {
 				t.Errorf("%s: content doesn't appear to be valid markdown (no # headers)", tt.name)
 			}
 		})
@@ -155,7 +192,6 @@ func TestAllTemplatesEmbedded(t *testing.T) {
 func TestEmbeddedFilesystemStructure(t *testing.T) {
 	fileSystem := GetTemplatesFS()
 
-	// Walk the filesystem and verify structure
 	expectedDirs := []string{
 		"templates",
 		"templates/claude",
@@ -186,27 +222,26 @@ func TestEmbeddedFilesystemStructure(t *testing.T) {
 
 func TestTemplatesAreLanguageAgnostic(t *testing.T) {
 	templates := map[string]func() (string, error){
-		"CLAUDE.md": GetClaudeMD,
 		"module.md": GetModuleMD,
 		"status.md": GetStatusMD,
 	}
 
 	// Check for file extensions - these should never appear in templates
 	fileExtensionPatterns := []string{
-		"\\.ts\"",      // TypeScript extensions
-		"\\.go\"",      // Go extensions
-		"\\.py\"",      // Python extensions
-		"\\.java\"",    // Java extensions
-		"\\.rs\"",      // Rust extensions
+		"\\.ts\"",   // TypeScript extensions
+		"\\.go\"",   // Go extensions
+		"\\.py\"",   // Python extensions
+		"\\.java\"", // Java extensions
+		"\\.rs\"",   // Rust extensions
 	}
 
 	// Check for actual test commands at start of lines (commands, not examples)
 	testCommandPatterns := []string{
-		"npm test",     // npm test at line start
-		"go test",      // go test at line start
-		"pytest",       // pytest at line start
-		"mvn test",     // maven test at line start
-		"cargo test",    // cargo test at line start
+		"npm test",  // npm test at line start
+		"go test",   // go test at line start
+		"pytest",    // pytest at line start
+		"mvn test",  // maven test at line start
+		"cargo test", // cargo test at line start
 	}
 
 	for name, getFunc := range templates {
@@ -216,19 +251,16 @@ func TestTemplatesAreLanguageAgnostic(t *testing.T) {
 				t.Fatalf("%s: error = %v", name, err)
 			}
 
-			// Check for file extensions
 			for _, pattern := range fileExtensionPatterns {
 				if strings.Contains(content, pattern) {
 					t.Errorf("%s contains language-specific file extension pattern %q", name, pattern)
 				}
 			}
 
-			// Check for test commands at line start (not in examples)
 			lines := strings.Split(content, "\n")
 			for _, line := range lines {
 				trimmed := strings.TrimSpace(line)
 				for _, pattern := range testCommandPatterns {
-					// Only flag if pattern appears at line start (actual command, not example)
 					if strings.HasPrefix(trimmed, pattern) && !strings.Contains(line, "Example patterns") {
 						t.Errorf("%s contains language-specific test command %q", name, pattern)
 					}
@@ -242,7 +274,7 @@ func TestTemplatesContainAgnosticGuidance(t *testing.T) {
 	templates := map[string]func() (string, error){
 		"module.md": GetModuleMD,
 	}
-	// Note: CLAUDE.md is now a minimal fill-in-the-blanks template
+	// Note: CLAUDE.md is an import-only entry point
 	// Note: status.md is excluded as it's a reporting command, not a scaffolding command
 
 	agnosticPatterns := []string{
@@ -260,14 +292,12 @@ func TestTemplatesContainAgnosticGuidance(t *testing.T) {
 				t.Fatalf("%s: error = %v", name, err)
 			}
 
-			// module.md should have AI inference guidelines
 			if name == "module.md" {
 				if !strings.Contains(content, "AI Inference Guidelines") {
 					t.Errorf("%s should contain 'AI Inference Guidelines' section", name)
 				}
 			}
 
-			// All should contain at least one agnostic pattern
 			found := false
 			for _, pattern := range agnosticPatterns {
 				if strings.Contains(content, pattern) {
