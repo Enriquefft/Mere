@@ -17,11 +17,11 @@ NC='\033[0m' # No Color
 
 # Print colored output
 info() {
-    echo -e "${GREEN}[INFO]${NC} $1"
+    echo -e "${GREEN}[INFO]${NC} $1" >&2
 }
 
 warn() {
-    echo -e "${YELLOW}[WARN]${NC} $1"
+    echo -e "${YELLOW}[WARN]${NC} $1" >&2
 }
 
 error() {
@@ -60,7 +60,7 @@ get_latest_version() {
         return
     fi
 
-    echo -e "${GREEN}[INFO]${NC} Fetching latest version from GitHub..." >&2
+    info "Fetching latest version from GitHub..."
     local latest_version
     latest_version=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 
