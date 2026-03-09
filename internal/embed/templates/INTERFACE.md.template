@@ -9,10 +9,19 @@
 {Define input/output types}
 
 ### Functions
-{Function signatures with brief descriptions}
+| Function | Input → Output | Description |
+|----------|----------------|-------------|
+| `{name}` | `{input} → {output}` | {what it does} |
+
 
 ### Usage Examples
 {Example code showing how to use this module}
+
+### Errors
+| Error | When | Return |
+|-------|------|--------|
+| `{ErrorName}` | {condition} | {what to return/do} |
+
 
 ## Dependencies
 {Other modules or external dependencies}
