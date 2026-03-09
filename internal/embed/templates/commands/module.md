@@ -135,14 +135,27 @@ Use appropriate test command for detected language.
 
 ---
 
-### Step 5: Update MANIFEST.md (Always Last)
+### Step 5: Review ARCHITECTURE.md
+
+Before updating MANIFEST.md, review the work done and ask:
+- Were any new decisions made? (e.g., chose a pattern, picked a library, resolved a trade-off)
+- Were any new conventions established? (e.g., how errors are handled, how modules communicate)
+- Were any new constraints discovered? (e.g., a limitation of the tech stack, a performance boundary)
+- Was the Module Layout used correctly, or does it need clarifying?
+
+If yes to any: propose the addition to the user. Do not write it yourself — wait for approval.
+If no: proceed.
+
+---
+
+### Step 6: Update MANIFEST.md (Always Last)
 
 After all work is complete and tests pass, update `.claude/context/MANIFEST.md`:
 - Add new module to inventory (if created)
 - Update status, dependencies, or purpose (if changed)
 - Append a row to Recent Changes with today's date and what was done
 
-**This is the last step. Do not update MANIFEST.md before the work is verified.**
+**This is the last step. Do not update MANIFEST.md before Step 5 (ARCHITECTURE.md review) is complete.**
 
 ---
 
@@ -154,6 +167,7 @@ Create mode:
 - [ ] Structure created using project layout paths from ARCHITECTURE.md
 - [ ] Boundary tests written
 - [ ] Implementation passes tests
+- [ ] ARCHITECTURE.md additions proposed (if any decisions/conventions emerged)
 - [ ] MANIFEST.md updated
 
 Work mode:
@@ -163,6 +177,7 @@ Work mode:
 - [ ] Contract unchanged (or changed only after following 4d Interface Change Rule)
 - [ ] No dependency interfaces modified (user consulted if needed)
 - [ ] Implementation improved
+- [ ] ARCHITECTURE.md additions proposed (if any decisions/conventions emerged)
 - [ ] MANIFEST.md updated
 
 ---
