@@ -14,3 +14,9 @@
 ## Conventions
 - {convention}
 - {convention}
+
+## Module Layout
+- Module root: `{modules_root}/{name}/`
+- Implementation: `{modules_root}/{name}/{impl}/`
+- Interface: `{modules_root}/{name}/INTERFACE.md`
+- Tests: `{tests_root}/{name}/`
