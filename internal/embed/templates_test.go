@@ -17,15 +17,14 @@ func TestGetClaudeMD(t *testing.T) {
 	}
 
 	// Verify it contains expected content
-	expected := "# Project Context"
+	expected := "# {PROJECT_NAME}"
 	if !strings.Contains(content, expected) {
 		t.Errorf("GetClaudeMD() does not contain expected content: %s", expected)
 	}
 
-	// Check approximate length (should be ~50-80 lines as per PRD with new Language-Agnostic Philosophy section)
-	lines := strings.Split(content, "\n")
-	if len(lines) < 50 || len(lines) > 90 {
-		t.Errorf("GetClaudeMD() line count = %d, expected ~50-80 lines", len(lines))
+	// Check that it has tech stack section
+	if !strings.Contains(content, "Tech Stack") {
+		t.Errorf("GetClaudeMD() should contain 'Tech Stack' section")
 	}
 }
 
@@ -242,8 +241,8 @@ func TestTemplatesAreLanguageAgnostic(t *testing.T) {
 func TestTemplatesContainAgnosticGuidance(t *testing.T) {
 	templates := map[string]func() (string, error){
 		"module.md": GetModuleMD,
-		"CLAUDE.md": GetClaudeMD,
 	}
+	// Note: CLAUDE.md is now a minimal fill-in-the-blanks template
 	// Note: status.md is excluded as it's a reporting command, not a scaffolding command
 
 	agnosticPatterns := []string{
