@@ -5,9 +5,21 @@ set -e
 # This script downloads and installs the Mere CLI tool
 
 VERSION="${VERSION:-latest}"
-INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
 REPO="Enriquefft/Mere"
 GITHUB_BASE="https://github.com/${REPO}/releases"
+
+# Detect NixOS early so it can influence defaults
+IS_NIXOS=false
+if [ -f /etc/os-release ] && grep -q "NixOS" /etc/os-release; then
+    IS_NIXOS=true
+fi
+
+# On NixOS, default to ~/.local/bin (no sudo, writable, usually in PATH)
+if [ "$IS_NIXOS" = true ]; then
+    INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/bin}"
+else
+    INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
+fi
 
 # Colors for output
 RED='\033[0;31m'
@@ -142,6 +154,39 @@ check_path() {
     fi
 }
 
+# Detect user's shell and validate config
+detect_shell_config() {
+    local shell_name=$(basename "$SHELL")
+    local shell_config=""
+
+    case "$shell_name" in
+        zsh)
+            shell_config="$HOME/.zshrc"
+            ;;
+        bash)
+            shell_config="$HOME/.bashrc"
+            ;;
+        fish)
+            shell_config="$HOME/.config/fish/config.fish"
+            ;;
+        ksh)
+            shell_config="$HOME/.kshrc"
+            ;;
+        *)
+            warn "Unknown shell: $shell_name"
+            return 1
+            ;;
+    esac
+
+    # Check if config exists
+    if [ ! -f "$shell_config" ]; then
+        warn "Shell config not found at $shell_config"
+        return 1
+    fi
+
+    echo "$shell_config"
+}
+
 # Main installation
 main() {
     echo ""
@@ -154,6 +199,13 @@ main() {
     local arch=$(detect_arch)
     info "Detected OS: ${os}"
     info "Detected Architecture: ${arch}"
+
+    if [ "$IS_NIXOS" = true ]; then
+        warn "NixOS detected. Installing to ${INSTALL_DIR}."
+        warn "If the binary fails to run, glibc path mismatch may be the cause."
+        warn "In that case, consider using: nix run github:${REPO}"
+    fi
+
     echo ""
 
     # Get version
@@ -180,7 +232,16 @@ main() {
 
     echo ""
     info "Next steps:"
-    echo "  1. Restart your shell or run: source ~/.bashrc (or ~/.zshrc)"
+    echo "  1. Reload your shell configuration:"
+
+    shell_config=$(detect_shell_config)
+    if [ $? -eq 0 ]; then
+        echo "     source $shell_config"
+    else
+        echo "     • Create your shell config file, or"
+        echo "     • Run: /usr/local/bin/mere init (with full path)"
+    fi
+
     echo "  2. Run: mere init"
     echo "  3. Use /module to create your first deep module"
     echo ""
