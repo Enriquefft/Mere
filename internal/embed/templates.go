@@ -42,6 +42,16 @@ func GetInterfaceMD() (string, error) {
 	return GetTemplate("templates/INTERFACE.md.template")
 }
 
+// GetArchitectureMD returns the ARCHITECTURE.md template content
+func GetArchitectureMD() (string, error) {
+	return GetTemplate("templates/claude/ARCHITECTURE.md")
+}
+
+// GetManifestMD returns the MANIFEST.md template content
+func GetManifestMD() (string, error) {
+	return GetTemplate("templates/claude/MANIFEST.md")
+}
+
 // ListTemplates returns a list of all embedded template files
 func ListTemplates() ([]string, error) {
 	var files []string
