@@ -12,6 +12,8 @@ import (
 func InitProject(force bool) error {
 	claudeDir := ".claude"
 	commandsDir := filepath.Join(claudeDir, "commands")
+	templatesDir := filepath.Join(claudeDir, "templates")
+	contextDir := filepath.Join(claudeDir, "context")
 
 	// Check if .claude/ already exists
 	if _, err := os.Stat(claudeDir); !os.IsNotExist(err) {
@@ -26,17 +28,14 @@ func InitProject(force bool) error {
 
 	fmt.Println("Initializing Mere project structure...")
 
-	// Create .claude/ directory
-	if err := CreateDirectory(claudeDir); err != nil {
-		return err
+	// Create subdirectories
+	for _, dir := range []string{commandsDir, templatesDir, contextDir} {
+		if err := CreateDirectory(dir); err != nil {
+			return err
+		}
 	}
 
-	// Create commands/ subdirectory
-	if err := CreateDirectory(commandsDir); err != nil {
-		return err
-	}
-
-	// Write CLAUDE.md at project root
+	// Write CLAUDE.md at project root (imports .claude/context/ARCHITECTURE.md)
 	claudeMD, err := embed.GetClaudeMD()
 	if err != nil {
 		return fmt.Errorf("failed to read CLAUDE.md template: %w", err)
@@ -46,7 +45,37 @@ func InitProject(force bool) error {
 	}
 	fmt.Println("  Created CLAUDE.md")
 
-	// Write module.md
+	// Write .claude/context/ARCHITECTURE.md (human-written project context)
+	architectureMD, err := embed.GetArchitectureMD()
+	if err != nil {
+		return fmt.Errorf("failed to read ARCHITECTURE.md template: %w", err)
+	}
+	if err := WriteFile(filepath.Join(contextDir, "ARCHITECTURE.md"), architectureMD); err != nil {
+		return err
+	}
+	fmt.Println("  Created .claude/context/ARCHITECTURE.md")
+
+	// Write .claude/context/MANIFEST.md (AI-maintained module inventory)
+	manifestMD, err := embed.GetManifestMD()
+	if err != nil {
+		return fmt.Errorf("failed to read MANIFEST.md template: %w", err)
+	}
+	if err := WriteFile(filepath.Join(contextDir, "MANIFEST.md"), manifestMD); err != nil {
+		return err
+	}
+	fmt.Println("  Created .claude/context/MANIFEST.md")
+
+	// Write .claude/templates/INTERFACE.md (interface contract template)
+	interfaceMD, err := embed.GetInterfaceMD()
+	if err != nil {
+		return fmt.Errorf("failed to read INTERFACE.md template: %w", err)
+	}
+	if err := WriteFile(filepath.Join(templatesDir, "INTERFACE.md"), interfaceMD); err != nil {
+		return err
+	}
+	fmt.Println("  Created .claude/templates/INTERFACE.md")
+
+	// Write .claude/commands/module.md
 	moduleMD, err := embed.GetModuleMD()
 	if err != nil {
 		return fmt.Errorf("failed to read module.md template: %w", err)
@@ -56,7 +85,7 @@ func InitProject(force bool) error {
 	}
 	fmt.Println("  Created .claude/commands/module.md")
 
-	// Write status.md
+	// Write .claude/commands/status.md
 	statusMD, err := embed.GetStatusMD()
 	if err != nil {
 		return fmt.Errorf("failed to read status.md template: %w", err)
@@ -68,9 +97,9 @@ func InitProject(force bool) error {
 
 	fmt.Println("\n✓ Mere initialized successfully!")
 	fmt.Println("\nNext steps:")
-	fmt.Println("  1. Update CLAUDE.md with your project context")
+	fmt.Println("  1. Fill in .claude/context/ARCHITECTURE.md with your project context")
 	fmt.Println("  2. Use /module to create your first deep module")
-	fmt.Println("  3. Use /status to check project state")
+	fmt.Println("  3. Use /status to check project state (updates .claude/context/MANIFEST.md)")
 
 	return nil
 }

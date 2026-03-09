@@ -2,25 +2,32 @@
 
 ## Purpose
 
-Provide AI with quick understanding of current project state.
+Provide a current snapshot of project state and keep `.claude/context/MANIFEST.md` up to date.
 
 ## Process
 
 ### Step 1: Read Project Context
 
-Read `CLAUDE.md` for:
-- Project overview
-- Architecture philosophy
-- Development guidelines
+Read `.claude/context/ARCHITECTURE.md` for:
+- Project overview and tech stack
+- Architecture style and constraints
 
 ### Step 2: Scan Services Directory
 
 For each module in `services/`:
 1. Read `INTERFACE.md`
-2. Check if `src/` exists and has implementation
+2. Check if implementation files exist
 3. Check if tests exist in `tests/services/`
 
-### Step 3: Report Status
+### Step 3: Update MANIFEST.md
+
+Rewrite `.claude/context/MANIFEST.md` with current state:
+- Update module inventory table (module name, purpose, status, dependencies, today's date)
+- Regenerate dependency graph from each module's `INTERFACE.md` `## Dependencies` section
+- Append a row to Recent Changes for any module that changed since last run
+- Note any gaps (missing tests, incomplete implementations)
+
+### Step 4: Report Status
 
 Format as:
 ```
@@ -33,16 +40,16 @@ Format as:
   Tests: [present/missing]
 
 **Recent Work:**
-[Summarize from project state markers or git if needed]
+[Summarize from MANIFEST.md Recent Changes]
 
 **Active Context:**
 - Language: [detected language]
-- Active module: [from CLAUDE.md if specified]
+- Active module: [if currently working on one]
 ```
 
-### Step 4: Test Status Summary
+### Step 5: Test Status Summary
 
 Check if tests pass:
-- Identify appropriate test command
+- Identify appropriate test command for detected language
 - Run tests and report results
 - Note any failing tests

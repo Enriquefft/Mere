@@ -1,12 +1,5 @@
-# {PROJECT_NAME}
+{PROJECT_NAME}
 
-## What This Is
-{User fills this in - one paragraph}
+{One paragraph. What this project does. Who it's for.}
 
-## Tech Stack
-{Auto-detected: Go 1.24, React, PostgreSQL, etc.}
-
-## Module Inventory
-| Module | Purpose | Status |
-|--------|---------|--------|
-| {modules will be listed here} |
+@.claude/context/ARCHITECTURE.md
