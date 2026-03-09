@@ -19,8 +19,7 @@ builds:
       - arm64
 
 archives:
-  - format: tar.gz
-    name_template: "mere-{{ .Os }}-{{ .Arch }}"
+  - name_template: "mere-{{ .Os }}-{{ .Arch }}"
     files:
       - LICENSE
       - README.md
