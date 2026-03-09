@@ -36,15 +36,15 @@ func InitProject(force bool) error {
 		return err
 	}
 
-	// Write CLAUDE.md
+	// Write CLAUDE.md at project root
 	claudeMD, err := embed.GetClaudeMD()
 	if err != nil {
 		return fmt.Errorf("failed to read CLAUDE.md template: %w", err)
 	}
-	if err := WriteFile(filepath.Join(claudeDir, "CLAUDE.md"), claudeMD); err != nil {
+	if err := WriteFile("CLAUDE.md", claudeMD); err != nil {
 		return err
 	}
-	fmt.Println("  Created .claude/CLAUDE.md")
+	fmt.Println("  Created CLAUDE.md")
 
 	// Write module.md
 	moduleMD, err := embed.GetModuleMD()
@@ -68,7 +68,7 @@ func InitProject(force bool) error {
 
 	fmt.Println("\n✓ Mere initialized successfully!")
 	fmt.Println("\nNext steps:")
-	fmt.Println("  1. Update .claude/CLAUDE.md with your project context")
+	fmt.Println("  1. Update CLAUDE.md with your project context")
 	fmt.Println("  2. Use /module to create your first deep module")
 	fmt.Println("  3. Use /status to check project state")
 

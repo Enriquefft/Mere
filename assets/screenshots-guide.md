@@ -25,14 +25,14 @@ This document provides specifications for taking screenshots for Mere's viral la
 ┌─────────────────────────────────────┐
 │ $ mere init                        │
 │ Initializing Mere project structure...│
-│   Created .claude/CLAUDE.md        │
+│   Created CLAUDE.md               │
 │   Created .claude/commands/module.md  │
 │   Created .claude/commands/status.md │
 │                                    │
 │ ✓ Mere initialized successfully!      │
 │                                    │
 │ Next steps:                         │
-│   1. Update .claude/CLAUDE.md...   │
+│   1. Update CLAUDE.md...           │
 │   2. Use /module to create...        │
 │                                    │
 └─────────────────────────────────────┘

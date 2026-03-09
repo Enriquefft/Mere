@@ -8,7 +8,7 @@ Provide AI with quick understanding of current project state.
 
 ### Step 1: Read Project Context
 
-Read `.claude/CLAUDE.md` for:
+Read `CLAUDE.md` for:
 - Project overview
 - Architecture philosophy
 - Development guidelines

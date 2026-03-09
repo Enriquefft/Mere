@@ -103,10 +103,9 @@ func TestInitProject_New(t *testing.T) {
 		t.Error("InitProject() did not create .claude directory")
 	}
 
-	// Verify CLAUDE.md was created
-	claudeMD := filepath.Join(claudeDir, "CLAUDE.md")
-	if _, err := os.Stat(claudeMD); err != nil {
-		t.Fatalf("CLAUDE.md not created: %v", err)
+	// Verify CLAUDE.md was created at project root
+	if _, err := os.Stat("CLAUDE.md"); err != nil {
+		t.Fatalf("CLAUDE.md not created at project root: %v", err)
 	}
 
 	// Verify commands directory was created
@@ -180,9 +179,8 @@ func TestInitProject_ExistingWithForce(t *testing.T) {
 		t.Fatalf("First InitProject() error = %v", err)
 	}
 
-	// Add a custom file to verify it's removed
-	claudeMD := filepath.Join(".claude", "CLAUDE.md")
-	err = os.WriteFile(claudeMD, []byte("custom content"), 0644)
+	// Add custom content to CLAUDE.md at root to verify it's overwritten
+	err = os.WriteFile("CLAUDE.md", []byte("custom content"), 0644)
 	if err != nil {
 		t.Fatalf("Failed to write custom file: %v", err)
 	}
@@ -194,7 +192,7 @@ func TestInitProject_ExistingWithForce(t *testing.T) {
 	}
 
 	// Verify custom content was replaced
-	content, err := os.ReadFile(claudeMD)
+	content, err := os.ReadFile("CLAUDE.md")
 	if err != nil {
 		t.Fatalf("Failed to read CLAUDE.md: %v", err)
 	}
@@ -203,8 +201,8 @@ func TestInitProject_ExistingWithForce(t *testing.T) {
 		t.Error("InitProject(force=true) did not overwrite existing files")
 	}
 
-	// Verify content is from template
-	expectedContent := "# Project Context"
+	// Verify content is from template (not the custom content)
+	expectedContent := "## What This Is"
 	if !containsString(string(content), expectedContent) {
 		t.Errorf("CLAUDE.md does not contain expected template content: %s", expectedContent)
 	}
