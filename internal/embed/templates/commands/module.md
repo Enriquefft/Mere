@@ -102,6 +102,13 @@ For each dependency:
 
 The interface is the contract. Internal implementation of dependencies is irrelevant and must not be consulted.
 
+#### Coding Style & Language Patterns
+
+If you need to understand coding style, language patterns, or API conventions:
+- Read `ARCHITECTURE.md` Conventions section — that is the only permitted source.
+- **Never read another module's implementation files for this purpose.**
+- If the needed convention is not in ARCHITECTURE.md, note the gap and surface it in Step 5. Do not work around it by reading implementation files.
+
 #### 4c. Identify Changes
 
 Ask user what needs changing:
