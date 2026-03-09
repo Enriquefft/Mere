@@ -60,7 +60,7 @@ get_latest_version() {
         return
     fi
 
-    info "Fetching latest version from GitHub..."
+    echo -e "${GREEN}[INFO]${NC} Fetching latest version from GitHub..." >&2
     local latest_version
     latest_version=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 
@@ -155,12 +155,14 @@ main() {
     echo ""
 
     # Get version
-    local version=$(get_latest_version)
+    local version
+    version=$(get_latest_version) || exit 1
     info "Installing version: ${version}"
     echo ""
 
     # Download binary
-    local binary_path=$(download_binary "$version" "$os" "$arch")
+    local binary_path
+    binary_path=$(download_binary "$version" "$os" "$arch") || exit 1
 
     # Install binary
     install_binary "$binary_path"
